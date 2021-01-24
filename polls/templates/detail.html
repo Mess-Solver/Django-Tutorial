@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tutorial</title>
+</head>
+<body>
+{%if error_message %} <span>{{error_message}}</span>{%endif%}
+{%if question %}
+<h1>Question ID : </h1> <h2>{{ question.id}}</h2><br>
+<h1>Question Text : </h1>  <h2>{{ question.question_text}}</h2><br>
+<h1>Choices</h1>
+    {% if question.choice_set.all %}
+<form method="post" action="{% url 'polls:vote' question.id %}">
+    {% csrf_token %}
+    {%for choice in question.choice_set.all %}
+    <input type="radio" name="choice" value="{{ choice.id }}" id="choice{{forloop.counter}}"/>
+    <label for="choice{{forloop.counter}}">{{ choice.choice_text }}</label>
+    {% endfor %}
+    <input type="submit" value="Submit"/>
+    {% else %}
+    <h3>Sorry! No Choices yet </h3>
+    {% endif %}
+</form>
+{% else %}
+<h1> Sorry! question doesnt exist anymore </h1>
+{% endif %}
+</body>
+</html>
